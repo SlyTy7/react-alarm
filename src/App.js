@@ -4,6 +4,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
+import Days from './Days.js';
 import Background from './bg.png';
 import './App.css';
 
@@ -14,13 +15,20 @@ class App extends Component {
       time: null,
       period: null,
       variant: "display1",
+      days: [
+        'Sun', 
+        'Mon', 
+        'Tue', 
+        'Wed', 
+        'Thu', 
+        'Fri', 
+        'Sat'],
     }
   }
 
   clockResize = () => {
-    ( window.innerWidth > 400 ) && ( this.setState({ variant: "display2" }) );
-    ( window.innerWidth > 500 ) && ( this.setState({ variant: "display3" }) );
-    ( window.innerWidth > 681 ) && ( this.setState({ variant: "display4" }) );
+    ( window.innerWidth > 450 ) && ( this.setState({ variant: "display3" }) );
+    ( window.innerWidth > 550 ) && ( this.setState({ variant: "display4" }) );
   }
 
   getTime = () => {
@@ -52,8 +60,8 @@ class App extends Component {
     this.clockResize();
   }
 
+  /* UPDATE TIME EVERY SECOND */
   tick = () => {
-    /* UPDATE TIME EVERY SECOND */
     setInterval(this.getTime, 1000);
   }
 
@@ -81,21 +89,41 @@ class App extends Component {
               
               <Paper style={{ padding: '35px 50px' }} >
 
-                <Paper style={{ padding: '0px 30px 20px 30px', backgroundColor: '#000' }}>
+                <Paper style={{ padding: '0px 30px 20px 30px', backgroundColor: '#000', color: '#79797936' }}>
 
-                  <Typography
-                    variant={this.state.variant} 
-                    color="primary" 
-                    style={{ position: 'absolute', fontFamily: 'digital-7', zIndex: '100' }} >
-                    {this.state.time} {this.state.period}
-                  </Typography>
+                  {/*CLOCK*/}
+                  <Grid container spacing={16} alignItems="center"> 
 
-                  <Typography
-                    variant={this.state.variant} 
-                    style={{ fontFamily: 'digital-7', color: '#79797936' }} >
-                    88:88:88 AM
-                  </Typography>
+                    {/*CLOCK*/}
+                    <Grid item>
+                      <Typography
+                        variant={this.state.variant} 
+                        color="primary" 
+                        style={{ position: 'absolute', fontFamily: 'digital-7', zIndex: '100' }}
+                        children={this.state.time} />
 
+                      <Typography
+                        variant={this.state.variant} 
+                        color="inherit"
+                        style={{ fontFamily: 'digital-7' }} 
+                        children="88:88:88" />
+                    </Grid>
+
+                    {/*PERIOD*/}
+                    <Grid item>
+                      <Grid container spacing={16} direction="column" >
+                        <Grid item>
+                          <Typography variant="button" children="am" color="inherit" />
+                        </Grid>
+                        <Grid item>
+                          <Typography variant="button" children="pm" color="primary" />
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+
+
+                  <Days days={this.state.days} />
                 </Paper>
 
                 <Grid container spacing={16} justify="center" style={{ marginTop: "25px" }}>

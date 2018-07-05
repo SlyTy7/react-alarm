@@ -1,0 +1,8 @@
+@font-face{
+ font-family: 'digital-7';
+ src: url('./digital-7.ttf');
+}
+
+.App {
+  height: 100vh;
+}

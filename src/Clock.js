@@ -4,20 +4,26 @@ import Grid from '@material-ui/core/Grid';
 import Time from './Time.js';
 import Days from './Days.js';
 import Period from './Period.js';
+import Alarm from './Alarm.js';
 
 class Clock extends Component {
 
   render() {
     return (
-      <Paper style={{ padding: '0px 30px 40px 30px', backgroundColor: '#000', color: '#79797936' }}>
+      <Paper style={{ padding: '0px 30px 30px 30px', backgroundColor: '#000', color: this.props.offColor }}>
         <Grid container spacing={16} alignItems="center" justify="center" > 
           {/*CLOCK*/}
           <Grid item>
-            <Time time={this.props.time} variant={this.props.variant} />
+            <Time time={this.props.time} variant={this.props.variant} lights={this.props.lights} />
           </Grid>
-          {/*PERIOD*/}
+          {/*STATUS*/}
           <Grid item>
-            <Period period={this.props.period} />
+            <Grid container spacing={8} direction="column" justify="center" style={{ marginTop: '50%' }} >
+              {/*PERIOD*/}
+              <Period period={this.props.period} />
+              {/*ALARM*/}
+              <Alarm alarmOn={this.props.alarmOn} />
+            </Grid>
           </Grid>
         </Grid>
         {/*DAYS*/}

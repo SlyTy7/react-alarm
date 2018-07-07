@@ -6,14 +6,14 @@ class Period extends Component {
 
   render() {
     return (
-      <Grid container spacing={16} direction="column" >
+      <React.Fragment>
         <Grid item>
           <Typography variant="button" children="am" color={this.props.period === "am" ? "primary" : "inherit"} />
         </Grid>
         <Grid item>
           <Typography variant="button" children="pm" color={this.props.period === "pm" ? "primary" : "inherit"} />
         </Grid>
-      </Grid>
+      </React.Fragment>
     );
   }
 }

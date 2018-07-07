@@ -3,9 +3,9 @@ import Background from './bg.png';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
 import Clock from './Clock.js';
-import AddAlarmButton from './AddAlarmButton.js';
+import EditAlarm from './EditAlarm.js';
+import AlarmSwitch from './AlarmSwitch.js';
 import './App.css';
 
 class App extends Component {
@@ -23,13 +23,16 @@ class App extends Component {
         'Thu', 
         'Fri', 
         'Sat'],
+      alarmOn: false,
+      alarmEditing: false,
+      lights: true,
     }
   }
 
   clockResize = () => {
     ( window.innerWidth > 350 ) && ( this.setState({ variant: "display2" }) );
     ( window.innerWidth > 450 ) && ( this.setState({ variant: "display3" }) );
-    ( window.innerWidth > 550 ) && ( this.setState({ variant: "display4" }) );
+    ( window.innerWidth > 580 ) && ( this.setState({ variant: "display4" }) );
   }
 
   getTime = () => {
@@ -40,7 +43,7 @@ class App extends Component {
     let period = "am";
 
     /* FIND OUT AM/PM */
-    ( hours > 12 ) && ( period = "pm" );
+    ( hours >= 12 ) && ( period = "pm" );
     /* CONVERT TO 12 HOUR FORMAT */
     ( hours > 12 ) && ( hours -= 12 );
     /* CONVERT 0 TO 12 FOR AFTER MIDNIGHT */
@@ -61,15 +64,29 @@ class App extends Component {
     this.clockResize();
   }
 
-  /* UPDATE TIME EVERY SECOND */
-  tick = () => {
-    setInterval(this.getTime, 1000);
+  flashClock = () => {
+    this.state.lights ? this.setState({ lights: false }) : this.setState({ lights: true });
+  }
+
+  handleEdit = () => {
+    if(this.state.alarmEditing){
+      this.getTime();
+      clearInterval(this.state.intervalId);
+      this.setState({ alarmEditing: false, lights: true, intervalId: setInterval(this.getTime, 1000) });
+    }else{
+      clearInterval(this.state.intervalId);
+      this.setState({ alarmEditing: true, intervalId: setInterval(this.flashClock, 400) });
+    }
+  }
+
+  handleAlarmSwitch = () => {
+    this.state.alarmOn ? this.setState({ alarmOn: false }) : this.setState({ alarmOn: true });
   }
 
   componentDidMount(){
     this.clockResize();
     this.getTime();
-    this.tick();
+    this.setState({ intervalId: setInterval(this.getTime, 1000) });
   }
 
   render() {
@@ -93,9 +110,23 @@ class App extends Component {
                   time={this.state.time} 
                   variant={this.state.variant} 
                   period={this.state.period} 
-                  days={this.state.days} />
-                {/*NEW ALARM BUTTON*/}
-                <AddAlarmButton />
+                  days={this.state.days} 
+                  alarmOn={this.state.alarmOn} 
+                  offColor='#101010'
+                  lights={this.state.lights} />
+
+                {/*BUTTONS*/}
+                <Grid container spacing={32} justify="center" style={{ marginTop: '10px' }}>
+                  <Grid item>
+                    {/*EDIT ALARM BUTTON*/}
+                    <EditAlarm edit={this.handleEdit} editing={this.state.alarmEditing} />
+                  </Grid>
+                  <Grid item>
+                    {/*ALARM ON OFF BUTTON*/}
+                    <AlarmSwitch alarmOn={this.handleAlarmSwitch} />
+                  </Grid>
+                </Grid>
+
               </Paper>
             </Grid>
           </Grid>

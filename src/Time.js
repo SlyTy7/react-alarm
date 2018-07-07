@@ -8,7 +8,7 @@ class Time extends Component {
       <React.Fragment>
         <Typography
           variant={this.props.variant} 
-          color="primary" 
+          color={ this.props.lights ? "primary" : "inherit" } 
           style={{ position: 'absolute', fontFamily: 'digital-7', zIndex: '100' }}
           children={this.props.time} />
 

@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import Typography from '@material-ui/core/Typography';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
-import Days from './Days.js';
 import Background from './bg.png';
-import AddIcon from '@material-ui/icons/Add';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import Clock from './Clock.js';
+import AddAlarmButton from './AddAlarmButton.js';
 import './App.css';
 
 class App extends Component {
@@ -38,10 +37,10 @@ class App extends Component {
     let hours = d.getHours();
     let mins = d.getMinutes();
     let secs = d.getSeconds();
-    let period = "AM";
+    let period = "am";
 
     /* FIND OUT AM/PM */
-    ( hours > 12 ) && ( period = "PM" );
+    ( hours > 12 ) && ( period = "pm" );
     /* CONVERT TO 12 HOUR FORMAT */
     ( hours > 12 ) && ( hours -= 12 );
     /* CONVERT 0 TO 12 FOR AFTER MIDNIGHT */
@@ -88,55 +87,15 @@ class App extends Component {
             style={{ height: '100%' }} >
 
             <Grid item>
-              
               <Paper style={{ padding: '40px 35px 25px 35px' }} >
-
-                <Paper style={{ padding: '0px 30px 40px 30px', backgroundColor: '#000', color: '#79797936' }}>
-
-                  {/*CLOCK*/}
-                  <Grid container spacing={16} alignItems="center" justify="center" > 
-
-                    {/*CLOCK*/}
-                    <Grid item>
-                      <Typography
-                        variant={this.state.variant} 
-                        color="primary" 
-                        style={{ position: 'absolute', fontFamily: 'digital-7', zIndex: '100' }}
-                        children={this.state.time} />
-
-                      <Typography
-                        variant={this.state.variant} 
-                        color="inherit"
-                        style={{ fontFamily: 'digital-7' }} 
-                        children="88:88:88" />
-                    </Grid>
-
-                    {/*PERIOD*/}
-                    <Grid item>
-                      <Grid container spacing={16} direction="column" >
-                        <Grid item>
-                          <Typography variant="button" children="am" color="inherit" />
-                        </Grid>
-                        <Grid item>
-                          <Typography variant="button" children="pm" color="primary" />
-                        </Grid>
-                      </Grid>
-                    </Grid>
-                  </Grid>
-
-
-                  <Days days={this.state.days} />
-                </Paper>
-
-                <Grid container spacing={8} justify="center" style={{ marginTop: "-30px" }}>
-
-                  <Grid item>
-                    <Button variant="fab" aria-label="add" color="secondary" >
-                      <AddIcon />
-                    </Button>                 
-                  </Grid>
-
-                </Grid>
+                {/*CLOCK*/}
+                <Clock 
+                  time={this.state.time} 
+                  variant={this.state.variant} 
+                  period={this.state.period} 
+                  days={this.state.days} />
+                {/*NEW ALARM BUTTON*/}
+                <AddAlarmButton />
               </Paper>
             </Grid>
           </Grid>

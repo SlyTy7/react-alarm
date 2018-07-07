@@ -6,7 +6,7 @@ class Days extends Component {
 
   render() {
     return (
-      <Grid container spacing={16} justify="center" >
+      <Grid container spacing={8} justify="center" >
         {
           this.props.days.map((item, index) => {
             let key = ("day" + index);

@@ -6,6 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Days from './Days.js';
 import Background from './bg.png';
+import AddIcon from '@material-ui/icons/Add';
 import './App.css';
 
 class App extends Component {
@@ -14,7 +15,7 @@ class App extends Component {
     this.state = {
       time: null,
       period: null,
-      variant: "display1",
+      variant: "display3",
       days: [
         'Sun', 
         'Mon', 
@@ -27,6 +28,7 @@ class App extends Component {
   }
 
   clockResize = () => {
+    ( window.innerWidth > 350 ) && ( this.setState({ variant: "display2" }) );
     ( window.innerWidth > 450 ) && ( this.setState({ variant: "display3" }) );
     ( window.innerWidth > 550 ) && ( this.setState({ variant: "display4" }) );
   }
@@ -87,12 +89,12 @@ class App extends Component {
 
             <Grid item>
               
-              <Paper style={{ padding: '35px 50px' }} >
+              <Paper style={{ padding: '40px 35px 25px 35px' }} >
 
-                <Paper style={{ padding: '0px 30px 20px 30px', backgroundColor: '#000', color: '#79797936' }}>
+                <Paper style={{ padding: '0px 30px 40px 30px', backgroundColor: '#000', color: '#79797936' }}>
 
                   {/*CLOCK*/}
-                  <Grid container spacing={16} alignItems="center"> 
+                  <Grid container spacing={16} alignItems="center" justify="center" > 
 
                     {/*CLOCK*/}
                     <Grid item>
@@ -126,15 +128,14 @@ class App extends Component {
                   <Days days={this.state.days} />
                 </Paper>
 
-                <Grid container spacing={16} justify="center" style={{ marginTop: "25px" }}>
+                <Grid container spacing={8} justify="center" style={{ marginTop: "-30px" }}>
 
                   <Grid item>
-                    <Button variant="contained" color="secondary" children="New Alarm" />                   
+                    <Button variant="fab" aria-label="add" color="secondary" >
+                      <AddIcon />
+                    </Button>                 
                   </Grid>
 
-                  <Grid item>
-                    <Button variant="contained" children="Delete Alarm" />
-                  </Grid>
                 </Grid>
               </Paper>
             </Grid>

@@ -13,6 +13,7 @@ class App extends Component {
     super(props);
     this.state = {
       time: null,
+      alarmTime: "12:00:00",
       period: null,
       variant: "display3",
       days: [
@@ -74,12 +75,72 @@ class App extends Component {
       this.getTime();  
       this.setState({ alarmEditing: false, lights: true, intervalId: setInterval(this.getTime, 1000) });
     }else{
-      this.setState({ alarmEditing: true, time: "00:00:00", intervalId: setInterval(this.flashClock, 400) });
+      this.setState({ alarmEditing: true, time: this.state.alarmTime, intervalId: setInterval(this.flashClock, 400) });
     }
   }
 
   handleAlarmSwitch = () => {
     this.state.alarmOn ? this.setState({ alarmOn: false }) : this.setState({ alarmOn: true });
+  }
+
+  handleRaise = (type) => {
+    let alarmHour = parseInt( this.state.alarmTime.slice(0,2), 10 );
+    let alarmMin = parseInt( this.state.alarmTime.slice(3,5), 10 );
+    let alarmSec = parseInt( this.state.alarmTime.slice(6), 10 );
+
+    /*SUBTRACT ONE DEPENDING ON WHICH TYPE*/
+    (type === "hour") && (alarmHour = alarmHour + 1);
+    (type === "min") && (alarmMin = alarmMin + 1);
+    (type === "sec") && (alarmSec = alarmSec + 1);
+
+    /*FORMAT HOURS*/
+    (alarmHour > 12) && ( alarmHour = 1 );
+    (alarmHour < 10) && ( alarmHour = "0" + alarmHour);
+
+    /*FORMAT MINS*/
+    (alarmMin > 59) && ( alarmMin = 0 );
+    (alarmMin < 10) && ( alarmMin = "0" + alarmMin);
+
+    /*FORMAT SECS*/
+    (alarmSec > 59) && ( alarmSec = 0 );
+    (alarmSec < 10) && ( alarmSec = "0" + alarmSec);
+
+    let newTime = alarmHour + ":" + alarmMin + ":" + alarmSec;
+
+    this.setState({
+      alarmTime: newTime,
+      time: newTime
+    })
+  }
+
+  handleLower = (type) => {
+    let alarmHour = parseInt( this.state.alarmTime.slice(0,2), 10 );
+    let alarmMin = parseInt( this.state.alarmTime.slice(3,5), 10 );
+    let alarmSec = parseInt( this.state.alarmTime.slice(6), 10 );
+
+    /*SUBTRACT ONE DEPENDING ON WHICH TYPE*/
+    (type === "hour") && (alarmHour = alarmHour - 1);
+    (type === "min") && (alarmMin = alarmMin - 1);
+    (type === "sec") && (alarmSec = alarmSec - 1);
+
+    /*FORMAT HOURS*/
+    (alarmHour < 1) && ( alarmHour = 12 );
+    (alarmHour < 10) && ( alarmHour = "0" + alarmHour);
+
+    /*FORMAT MINS*/
+    (alarmMin < 0) && ( alarmMin = 59 );
+    (alarmMin < 10) && ( alarmMin = "0" + alarmMin);
+
+    /*FORMAT SECS*/
+    (alarmSec < 0) && ( alarmSec = 59 );
+    (alarmSec < 10) && ( alarmSec = "0" + alarmSec);
+
+    let newTime = alarmHour + ":" + alarmMin + ":" + alarmSec;
+
+    this.setState({
+      alarmTime: newTime,
+      time: newTime
+    })
   }
 
   componentDidMount(){
@@ -113,7 +174,9 @@ class App extends Component {
                   alarmOn={this.state.alarmOn} 
                   offColor='#070707'
                   lights={this.state.lights} 
-                  isEditing={this.state.alarmEditing} />
+                  isEditing={this.state.alarmEditing} 
+                  handleRaise={(type) => this.handleRaise(type)}
+                  handleLower={(type) => this.handleLower(type)} />
 
                 {/*BUTTONS*/}
                 <Grid container spacing={32} justify="center" style={{ marginTop: '10px' }}>

@@ -19,11 +19,11 @@ class Clock extends Component {
           <Grid item>
 
 
-            { this.props.isEditing && <UpButtons /> }
+            { this.props.isEditing && <UpButtons handleRaise={(type) => this.props.handleRaise(type)} /> }
 
             <Time time={this.props.time} variant={this.props.variant} lights={this.props.lights} />
 
-            { this.props.isEditing && <DownButtons /> }
+            { this.props.isEditing && <DownButtons handleLower={(type) => this.props.handleLower(type)} /> }
 
           </Grid>
           {/*STATUS*/}

@@ -9,19 +9,34 @@ class DownButtons extends Component {
       <Grid container justify="space-around" spacing={40} style={{ margin: "10px -20px -90px -20px" }}>
 
         <Grid item>
-          <Button variant="fab" aria-label="down" mini color="secondary">
+          <Button
+            mini
+            variant="fab"
+            aria-label="down" 
+            color="secondary" 
+            onClick={ () => this.props.handleLower("hour") } >
             <DownIcon />
           </Button> 
         </Grid>
 
         <Grid item>
-          <Button variant="fab" aria-label="down" mini color="secondary">
+          <Button
+            mini
+            variant="fab"
+            aria-label="down" 
+            color="secondary" 
+            onClick={ () => this.props.handleLower("min") } >
             <DownIcon />
           </Button> 
         </Grid>
 
         <Grid item>
-          <Button variant="fab" aria-label="down" mini color="secondary">
+          <Button
+            mini
+            variant="fab"
+            aria-label="down" 
+            color="secondary" 
+            onClick={ () => this.props.handleLower("sec") } >
             <DownIcon />
           </Button> 
         </Grid>

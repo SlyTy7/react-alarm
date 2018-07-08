@@ -9,19 +9,34 @@ class UpButtons extends Component {
       <Grid container justify="space-around" spacing={40} style={{ margin: "-50px -20px -30px -20px"}} >
 
         <Grid item>
-          <Button variant="fab" aria-label="up" mini color="secondary">
+          <Button
+            mini
+            variant="fab"
+            aria-label="up" 
+            color="secondary" 
+            onClick={ () => this.props.handleRaise("hour") } >
             <UpIcon />
           </Button> 
         </Grid>
 
         <Grid item>
-          <Button variant="fab" aria-label="up" mini color="secondary">
+          <Button
+            mini
+            variant="fab"
+            aria-label="up" 
+            color="secondary" 
+            onClick={ () => this.props.handleRaise("min") } >
             <UpIcon />
           </Button> 
         </Grid>
 
         <Grid item>
-          <Button variant="fab" aria-label="up" mini color="secondary">
+          <Button
+            mini
+            variant="fab"
+            aria-label="up" 
+            color="secondary" 
+            onClick={ () => this.props.handleRaise("sec") } >
             <UpIcon />
           </Button> 
         </Grid>

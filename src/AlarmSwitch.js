@@ -7,6 +7,7 @@ class AlarmSwitch extends Component {
       <Button 
         variant="contained" 
         color="secondary" 
+        disabled={ this.props.isEditing }
         onClick={ this.props.alarmBuzzing ? this.props.handleEndAlarm : this.props.handleSwitchAlarm } 
         children={ this.props.alarmBuzzing ? "stop" : "alarm" } />
     );

@@ -23,7 +23,7 @@ class Clock extends Component {
 
             { this.props.isEditing && <UpButtons handleRaise={(type) => this.props.handleRaise(type)} /> }
 
-            <Time time={this.props.time} variant={this.props.variant} lights={this.props.lights} />
+            <Time time={this.props.displayedTime} variant={this.props.variant} lights={this.props.lights} />
 
             { this.props.isEditing && <DownButtons handleLower={(type) => this.props.handleLower(type)} /> }
 
@@ -35,7 +35,7 @@ class Clock extends Component {
 
             <Grid container spacing={8} direction="column" justify="center" style={{ marginTop: '50%' }} >
               {/*PERIOD*/}
-              <Period period={this.props.period} />
+              <Period period={this.props.displayedPeriod} />
               {/*ALARM*/}
               <Alarm alarmOn={this.props.alarmOn} />
             </Grid>

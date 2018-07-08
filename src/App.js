@@ -21,7 +21,7 @@ class App extends Component {
       alarmBuzzing: false,
       alarmEditing: false,
       lights: true,
-      lightsOffColor: "#070707",
+      lightsOffColor: "#121212",
       variant: "display3",
       days: [
         'Sun', 
@@ -61,19 +61,22 @@ class App extends Component {
     this.setState({
       time: hours + ":" + mins + ":" + secs,
       period: period,
+      displayedTime: hours + ":" + mins + ":" + secs,
+      displayedPeriod: period,
     });
 
     /* TEMPORARY SOLUTION TO UPDATE CLOCK SIZE ON WINDOW RESIZE */
     this.clockResize();
-
     /* CHECK AGAINST ALARM TIME */
-    this.checkAlarm();
+    this.state.alarmOn && this.checkAlarm();
   }
 
   checkAlarm = () => {
-    if( ( this.state.time === this.state.alarmTime && this.state.period === this.state.alarmPeriod ) && this.state.alarmOn){
-      clearInterval(this.state.intervalId);
-      this.setState({ intervalId: setInterval(this.flashClock, 400), alarmBuzzing: true });
+    if(this.state.time === this.state.alarmTime){
+      if (this.state.period === this.state.alarmPeriod){
+        clearInterval(this.state.intervalId);
+        this.setState({ intervalId: setInterval(this.flashClock, 400), alarmBuzzing: true });
+      }
     }
   }
 
@@ -85,10 +88,18 @@ class App extends Component {
   editAlarm = () => {
     clearInterval(this.state.intervalId);
     if(this.state.alarmEditing){
-      this.getTime();
-      this.setState({ alarmEditing: false, lights: true, intervalId: setInterval(this.getTime, 1000) });
+      this.setState({ 
+        alarmEditing: false, 
+        lights: true, 
+        displayedTime: this.state.time,
+        displayedPeriod: this.state.period,
+        intervalId: setInterval(this.getTime, 1000) });
     }else{
-      this.setState({ alarmEditing: true, time: this.state.alarmTime, period: this.state.alarmPeriod, intervalId: setInterval(this.flashClock, 400) });
+      this.setState({
+        alarmEditing: true, 
+        displayedTime: this.state.alarmTime,
+        displayedPeriod: this.state.alarmPeriod,
+        intervalId: setInterval(this.flashClock, 400) });
     }
   }
 
@@ -126,7 +137,7 @@ class App extends Component {
 
     this.setState({
       alarmTime: newTime,
-      time: newTime
+      displayedTime: newTime
     })
   }
 
@@ -156,13 +167,13 @@ class App extends Component {
 
     this.setState({
       alarmTime: newTime,
-      time: newTime
+      displayedTime: newTime
     })
   }
 
   switchAlarmPeriod = () => {
-    ( this.state.alarmPeriod === "am" ) && this.setState({ alarmPeriod: "pm" });
-    ( this.state.alarmPeriod === "pm" ) && this.setState({ alarmPeriod: "am" });
+    ( this.state.alarmPeriod === "am" ) && this.setState({ alarmPeriod: "pm", displayedPeriod: "pm" });
+    ( this.state.alarmPeriod === "pm" ) && this.setState({ alarmPeriod: "am", displayedPeriod: "am" });
   }
 
   componentDidMount(){
@@ -190,8 +201,9 @@ class App extends Component {
                 {/*CLOCK*/}
                 <Clock 
                   time={this.state.time} 
+                  displayedTime={this.state.displayedTime}
+                  displayedPeriod={this.state.displayedPeriod}
                   variant={this.state.variant} 
-                  period={this.state.alarmEditing ? this.state.alarmPeriod : this.state.period } 
                   days={this.state.days} 
                   alarmOn={this.state.alarmOn} 
                   offColor={this.state.lightsOffColor}

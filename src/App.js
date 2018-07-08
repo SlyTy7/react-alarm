@@ -34,7 +34,7 @@ class App extends Component {
     }
   }
 
-  clockResize = () => {
+  getClockSize = () => {
     ( window.innerWidth > 350 ) && ( this.setState({ variant: "display2" }) );
     ( window.innerWidth > 450 ) && ( this.setState({ variant: "display3" }) );
     ( window.innerWidth > 580 ) && ( this.setState({ variant: "display4" }) );
@@ -66,7 +66,7 @@ class App extends Component {
     });
 
     /* TEMPORARY SOLUTION TO UPDATE CLOCK SIZE ON WINDOW RESIZE */
-    this.clockResize();
+    this.getClockSize();
     /* CHECK AGAINST ALARM TIME */
     this.state.alarmOn && this.checkAlarm();
   }
@@ -177,7 +177,7 @@ class App extends Component {
   }
 
   componentDidMount(){
-    this.clockResize();
+    this.getClockSize();
     this.getTime();
     this.setState({ intervalId: setInterval(this.getTime, 1000) });
   }

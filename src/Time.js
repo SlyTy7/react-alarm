@@ -10,10 +10,10 @@ class Time extends Component {
           variant={this.props.variant} 
           color={ this.props.lights ? "primary" : "inherit" } 
           style={{ position: 'absolute', fontFamily: 'digital-7', zIndex: '100' }}
-          children={this.props.time} />
+          children={ this.props.time } />
 
         <Typography
-          variant={this.props.variant} 
+          variant={ this.props.variant } 
           color="inherit"
           style={{ fontFamily: 'digital-7' }} 
           children="88:88:88" />

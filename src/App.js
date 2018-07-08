@@ -69,13 +69,12 @@ class App extends Component {
   }
 
   handleEdit = () => {
+    clearInterval(this.state.intervalId);
     if(this.state.alarmEditing){
-      this.getTime();
-      clearInterval(this.state.intervalId);
+      this.getTime();  
       this.setState({ alarmEditing: false, lights: true, intervalId: setInterval(this.getTime, 1000) });
     }else{
-      clearInterval(this.state.intervalId);
-      this.setState({ alarmEditing: true, intervalId: setInterval(this.flashClock, 400) });
+      this.setState({ alarmEditing: true, time: "00:00:00", intervalId: setInterval(this.flashClock, 400) });
     }
   }
 
@@ -112,8 +111,9 @@ class App extends Component {
                   period={this.state.period} 
                   days={this.state.days} 
                   alarmOn={this.state.alarmOn} 
-                  offColor='#101010'
-                  lights={this.state.lights} />
+                  offColor='#070707'
+                  lights={this.state.lights} 
+                  isEditing={this.state.alarmEditing} />
 
                 {/*BUTTONS*/}
                 <Grid container spacing={32} justify="center" style={{ marginTop: '10px' }}>

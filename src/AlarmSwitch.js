@@ -4,7 +4,11 @@ import Button from '@material-ui/core/Button';
 class AlarmSwitch extends Component {
   render() {
     return (
-      <Button variant="contained" color="secondary" onClick={this.props.alarmOn} children="Alarm" />
+      <Button 
+        variant="contained" 
+        color="secondary" 
+        onClick={ this.props.alarmBuzzing ? this.props.handleEndAlarm : this.props.handleSwitchAlarm } 
+        children={ this.props.alarmBuzzing ? "stop" : "alarm" } />
     );
   }
 }

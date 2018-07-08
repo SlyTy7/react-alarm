@@ -12,10 +12,16 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state = {
+      intervalId: null,
       time: null,
-      alarmTime: "12:00:00",
       period: null,
+      alarmTime: "12:00:00",
       alarmPeriod: "am",
+      alarmOn: false,
+      alarmBuzzing: false,
+      alarmEditing: false,
+      lights: true,
+      lightsOffColor: "#070707",
       variant: "display3",
       days: [
         'Sun', 
@@ -25,9 +31,6 @@ class App extends Component {
         'Thu', 
         'Fri', 
         'Sat'],
-      alarmOn: false,
-      alarmEditing: false,
-      lights: true,
     }
   }
 
@@ -44,17 +47,15 @@ class App extends Component {
     let secs = d.getSeconds();
     let period = "am";
 
-    /* FIND OUT AM/PM */
+    /* FIND PERIOD */
     ( hours >= 12 ) && ( period = "pm" );
-    /* CONVERT TO 12 HOUR FORMAT */
+    /* FORMAT HOURS */
     ( hours > 12 ) && ( hours -= 12 );
-    /* CONVERT 0 TO 12 FOR AFTER MIDNIGHT */
     ( hours === 0 ) && ( hours = 12 );
-    /* ADD ZERO IN FRONT OF HOURS AMOUNT */
     ( hours < 10 ) && ( hours = "0" + hours );
-    /* ADD ZERO IN FRONT OF MINS AMOUNT */
+    /* FORMAT MINS */
     ( mins < 10 ) && ( mins = "0" + mins );
-    /* ADD ZERO IN FRONT OF SECS AMOUNT */
+    /* FORMAT SECS */
     ( secs < 10 ) && ( secs = "0" + secs );
 
     this.setState({
@@ -70,16 +71,18 @@ class App extends Component {
   }
 
   checkAlarm = () => {
-    if(this.state.time === this.state.alarmTime && this.state.period === this.state.alarmPeriod){
-      console.log("WAKEEEEE UPPPPPPP!!!!!!!");
+    if( ( this.state.time === this.state.alarmTime && this.state.period === this.state.alarmPeriod ) && this.state.alarmOn){
+      clearInterval(this.state.intervalId);
+      this.setState({ intervalId: setInterval(this.flashClock, 400), alarmBuzzing: true });
     }
   }
 
-  flashClock = () => {
-    this.state.lights ? this.setState({ lights: false }) : this.setState({ lights: true });
+  endAlarm = () => {
+    clearInterval(this.state.intervalId);
+    this.setState({ alarmOm: false, alarmBuzzing: false, lights: true, intervalId: setInterval(this.getTime, 400)});
   }
 
-  handleEdit = () => {
+  editAlarm = () => {
     clearInterval(this.state.intervalId);
     if(this.state.alarmEditing){
       this.getTime();
@@ -89,11 +92,15 @@ class App extends Component {
     }
   }
 
-  handleAlarmSwitch = () => {
-    this.state.alarmOn ? this.setState({ alarmOn: false }) : this.setState({ alarmOn: true });
+  switchAlarm = () => {
+    !(this.state.alarmEditing) && (this.state.alarmOn ? this.setState({ alarmOn: false }) : this.setState({ alarmOn: true }));
   }
 
-  handleRaise = (type) => {
+  flashClock = () => {
+    this.state.lights ? this.setState({ lights: false }) : this.setState({ lights: true });
+  }
+
+  raiseOne = (type) => {
     let alarmHour = parseInt( this.state.alarmTime.slice(0,2), 10 );
     let alarmMin = parseInt( this.state.alarmTime.slice(3,5), 10 );
     let alarmSec = parseInt( this.state.alarmTime.slice(6), 10 );
@@ -123,7 +130,7 @@ class App extends Component {
     })
   }
 
-  handleLower = (type) => {
+  lowerOne = (type) => {
     let alarmHour = parseInt( this.state.alarmTime.slice(0,2), 10 );
     let alarmMin = parseInt( this.state.alarmTime.slice(3,5), 10 );
     let alarmSec = parseInt( this.state.alarmTime.slice(6), 10 );
@@ -153,7 +160,7 @@ class App extends Component {
     })
   }
 
-  handleAlarmPeriodSwitch = () => {
+  switchAlarmPeriod = () => {
     ( this.state.alarmPeriod === "am" ) && this.setState({ alarmPeriod: "pm" });
     ( this.state.alarmPeriod === "pm" ) && this.setState({ alarmPeriod: "am" });
   }
@@ -187,22 +194,26 @@ class App extends Component {
                   period={this.state.alarmEditing ? this.state.alarmPeriod : this.state.period } 
                   days={this.state.days} 
                   alarmOn={this.state.alarmOn} 
-                  offColor='#070707'
+                  offColor={this.state.lightsOffColor}
                   lights={this.state.lights} 
                   isEditing={this.state.alarmEditing} 
-                  handleRaise={(type) => this.handleRaise(type)}
-                  handleLower={(type) => this.handleLower(type)}
-                  handlePeriod={this.handleAlarmPeriodSwitch} />
+                  handleRaise={(type) => this.raiseOne(type)}
+                  handleLower={(type) => this.lowerOne(type)}
+                  handlePeriod={this.switchAlarmPeriod} />
 
                 {/*BUTTONS*/}
                 <Grid container spacing={32} justify="center" style={{ marginTop: '10px' }}>
                   <Grid item>
                     {/*EDIT ALARM BUTTON*/}
-                    <EditAlarm edit={this.handleEdit} editing={this.state.alarmEditing} />
+                    <EditAlarm handleEditAlarm={this.editAlarm} editing={this.state.alarmEditing} />
                   </Grid>
                   <Grid item>
                     {/*ALARM ON OFF BUTTON*/}
-                    <AlarmSwitch alarmOn={this.handleAlarmSwitch} />
+                    <AlarmSwitch 
+                      handleSwitchAlarm={this.switchAlarm} 
+                      handleEndAlarm={this.endAlarm}
+                      isEditing={this.state.alarmEditing}
+                      alarmBuzzing={this.state.alarmBuzzing} />
                   </Grid>
                 </Grid>
 

@@ -7,7 +7,7 @@ class EditAlarm extends Component {
       <Button 
         variant="contained" 
         color="primary" 
-        onClick={this.props.edit}
+        onClick={this.props.handleEditAlarm}
         children={this.props.editing ? "save" : "edit" } />
     );
   }

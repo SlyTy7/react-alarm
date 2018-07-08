@@ -15,6 +15,7 @@ class App extends Component {
       time: null,
       alarmTime: "12:00:00",
       period: null,
+      alarmPeriod: "am",
       variant: "display3",
       days: [
         'Sun', 
@@ -63,6 +64,15 @@ class App extends Component {
 
     /* TEMPORARY SOLUTION TO UPDATE CLOCK SIZE ON WINDOW RESIZE */
     this.clockResize();
+
+    /* CHECK AGAINST ALARM TIME */
+    this.checkAlarm();
+  }
+
+  checkAlarm = () => {
+    if(this.state.time === this.state.alarmTime && this.state.period === this.state.alarmPeriod){
+      console.log("WAKEEEEE UPPPPPPP!!!!!!!");
+    }
   }
 
   flashClock = () => {
@@ -72,10 +82,10 @@ class App extends Component {
   handleEdit = () => {
     clearInterval(this.state.intervalId);
     if(this.state.alarmEditing){
-      this.getTime();  
+      this.getTime();
       this.setState({ alarmEditing: false, lights: true, intervalId: setInterval(this.getTime, 1000) });
     }else{
-      this.setState({ alarmEditing: true, time: this.state.alarmTime, intervalId: setInterval(this.flashClock, 400) });
+      this.setState({ alarmEditing: true, time: this.state.alarmTime, period: this.state.alarmPeriod, intervalId: setInterval(this.flashClock, 400) });
     }
   }
 
@@ -143,6 +153,11 @@ class App extends Component {
     })
   }
 
+  handleAlarmPeriodSwitch = () => {
+    ( this.state.alarmPeriod === "am" ) && this.setState({ alarmPeriod: "pm" });
+    ( this.state.alarmPeriod === "pm" ) && this.setState({ alarmPeriod: "am" });
+  }
+
   componentDidMount(){
     this.clockResize();
     this.getTime();
@@ -169,14 +184,15 @@ class App extends Component {
                 <Clock 
                   time={this.state.time} 
                   variant={this.state.variant} 
-                  period={this.state.period} 
+                  period={this.state.alarmEditing ? this.state.alarmPeriod : this.state.period } 
                   days={this.state.days} 
                   alarmOn={this.state.alarmOn} 
                   offColor='#070707'
                   lights={this.state.lights} 
                   isEditing={this.state.alarmEditing} 
                   handleRaise={(type) => this.handleRaise(type)}
-                  handleLower={(type) => this.handleLower(type)} />
+                  handleLower={(type) => this.handleLower(type)}
+                  handlePeriod={this.handleAlarmPeriodSwitch} />
 
                 {/*BUTTONS*/}
                 <Grid container spacing={32} justify="center" style={{ marginTop: '10px' }}>

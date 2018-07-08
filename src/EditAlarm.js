@@ -7,8 +7,9 @@ class EditAlarm extends Component {
       <Button 
         variant="contained" 
         color="primary" 
+        disabled={this.props.alarmBuzzing}
         onClick={this.props.handleEditAlarm}
-        children={this.props.editing ? "save" : "edit" } />
+        children={this.props.isEditing ? "save" : "edit" } />
     );
   }
 }

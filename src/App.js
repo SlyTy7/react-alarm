@@ -217,7 +217,10 @@ class App extends Component {
                 <Grid container spacing={32} justify="center" style={{ marginTop: '10px' }}>
                   <Grid item>
                     {/*EDIT ALARM BUTTON*/}
-                    <EditAlarm handleEditAlarm={this.editAlarm} editing={this.state.alarmEditing} />
+                    <EditAlarm 
+                      handleEditAlarm={this.editAlarm} 
+                      isEditing={this.state.alarmEditing} 
+                      alarmBuzzing={this.state.alarmBuzzing} />
                   </Grid>
                   <Grid item>
                     {/*ALARM ON OFF BUTTON*/}

@@ -12,6 +12,7 @@ class Days extends Component {
             let key = ("day" + index);
             let d = new Date();
             let today = d.getDay();
+            this.props.isEditing && (today = -1);
 
             return (
               <Grid item key={key}>

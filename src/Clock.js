@@ -42,7 +42,7 @@ class Clock extends Component {
           </Grid>
         </Grid>
         {/*DAYS*/}
-        <Days days={this.props.days} />
+        <Days days={this.props.days} isEditing={this.props.isEditing} />
       </Paper>
     );
   }

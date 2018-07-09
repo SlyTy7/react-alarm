@@ -9,17 +9,13 @@ import UpButtons from './UpButtons.js';
 import DownButtons from './DownButtons.js';
 import PeriodButton from './PeriodButton.js';
 
-
-
 class Clock extends Component {
-
   render() {
     return (
       <Paper style={{ padding: '0px 30px 30px 30px', backgroundColor: '#000', color: this.props.offColor }}>
         <Grid container spacing={16} justify="center" > 
           {/*CLOCK*/}
           <Grid item>
-
 
             { this.props.isEditing && <UpButtons handleRaise={(type) => this.props.handleRaise(type)} /> }
 

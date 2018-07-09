@@ -6,6 +6,7 @@ import Paper from '@material-ui/core/Paper';
 import Clock from './Clock.js';
 import EditAlarm from './EditAlarm.js';
 import AlarmSwitch from './AlarmSwitch.js';
+import AlarmSound from './alarm.mp3';
 import './App.css';
 
 class App extends Component {
@@ -20,9 +21,10 @@ class App extends Component {
       alarmOn: false,
       alarmBuzzing: false,
       alarmEditing: false,
+      alarmSound: new Audio(AlarmSound),
       lights: true,
       lightsOffColor: "#121212",
-      variant: "display3",
+      variant: "display4",
       days: [
         'Sun', 
         'Mon', 
@@ -68,26 +70,62 @@ class App extends Component {
     /* TEMPORARY SOLUTION TO UPDATE CLOCK SIZE ON WINDOW RESIZE */
     this.getClockSize();
     /* CHECK AGAINST ALARM TIME */
-    this.state.alarmOn && this.checkAlarm();
+    !this.state.alarmEditing && this.state.alarmOn && this.checkAlarm();
   }
 
   checkAlarm = () => {
     if(this.state.time === this.state.alarmTime){
       if (this.state.period === this.state.alarmPeriod){
+        let sound = this.state.alarmSound;
+        sound.muted = false;
+
         clearInterval(this.state.intervalId);
         this.setState({ intervalId: setInterval(this.flashClock, 400), alarmBuzzing: true });
       }
     }
   }
 
+  getAlarmSound = () => {
+    /*
+
+    IN ORDER TO GET ALARM SOUND WORKING ON SAFARI;
+    ====
+    Sound files must be started with a button press,
+    so alarm is started in this function muted, 
+    and called once user edits the default alarm,
+    and unmuted once alarm goes off.
+
+    */
+
+    let sound = new Audio(AlarmSound);
+    sound.loop = true;
+    sound.muted = true;
+    sound.play();
+
+    this.setState({
+      alarmSound: sound,
+    })
+  }
+
   endAlarm = () => {
+    let sound = this.state.alarmSound;
+    sound.muted = true;
+
     clearInterval(this.state.intervalId);
-    this.setState({ alarmOm: false, alarmBuzzing: false, lights: true, intervalId: setInterval(this.getTime, 400)});
+    this.setState({ 
+      alarmOn: false, 
+      alarmBuzzing: false, 
+      lights: true, 
+      intervalId: setInterval(this.getTime, 400),
+    });
   }
 
   editAlarm = () => {
     clearInterval(this.state.intervalId);
     if(this.state.alarmEditing){
+      this.getTime();
+      /*MUST CALL AUDIO FILES ON BUTTON PRESS TO WORK IN SAFARI*/
+      this.getAlarmSound();
       this.setState({ 
         alarmEditing: false, 
         lights: true, 

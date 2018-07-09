@@ -1,5 +1,5 @@
 {
-  "homepage": "http://slyty7.github.io/react-alarm",
+  "homepage": "https://slyty7.github.io/react-alarm/",
   "name": "react-alarm",
   "version": "0.1.0",
   "private": true,
@@ -14,7 +14,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "deploy": "gh-pages -d build",
+    "deploy": "npm run build&&gh-pages -d build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   }

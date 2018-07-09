@@ -1,0 +1,1 @@
+{"version":3,"sources":["App.css"],"names":[],"mappings":"AAAA,WACC,sBACA,iCAA4B,CAG7B,KACE,YAAc,CACf","file":"static/css/main.8b78b86d.css","sourcesContent":["@font-face{\n font-family: 'digital-7';\n src: url('./digital-7.ttf');\n}\n\n.App {\n  height: 100vh;\n}\n\n\n\n// WEBPACK FOOTER //\n// ./src/App.css"],"sourceRoot":""}
